@@ -137,37 +137,8 @@
   }
 
   /* ── ADMIN ── */
-  .admin-login { max-width:360px; margin:80px auto; text-align:center; }
-  .admin-login h3 { font-family:'DM Serif Display',serif; font-size:1.4rem; margin-bottom:8px; }
-  .admin-login p { color:var(--text-muted); font-size:0.88rem; margin-bottom:24px; }
-  .admin-login input { width:100%; padding:12px 16px; border:1px solid var(--border); border-radius:8px; font-family:'Outfit',sans-serif; font-size:0.95rem; margin-bottom:12px; text-align:center; }
-  .admin-login input:focus { outline:none; border-color:var(--columbia-navy); }
-  .login-btn { width:100%; background:var(--columbia-navy); color:white; border:none; padding:12px; border-radius:8px; font-family:'Outfit',sans-serif; font-size:0.9rem; font-weight:600; cursor:pointer; }
-  .login-btn:hover { background:var(--columbia-navy-light); }
-  .error-msg { color:#e85d5d; font-size:0.82rem; margin-top:8px; display:none; }
-  .orders-view { display:none; }
-  .orders-view.visible { display:block; }
-  .orders-toolbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:12px; }
-  .orders-toolbar h3 { font-family:'DM Serif Display',serif; font-size:1.4rem; }
-  .orders-stats { display:flex; gap:20px; }
-  .stat-box { background:var(--columbia-sky); padding:12px 20px; border-radius:10px; text-align:center; }
-  .stat-box .stat-num { font-size:1.5rem; font-weight:700; color:var(--columbia-navy); }
-  .stat-box .stat-label { font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted); font-weight:600; }
-  .orders-table-wrap { overflow-x:auto; border:1px solid var(--border); border-radius:var(--radius); background:white; margin-top:20px; }
-  .orders-table { width:100%; border-collapse:collapse; font-size:0.85rem; }
-  .orders-table th { background:var(--columbia-navy); color:white; padding:12px 16px; text-align:left; font-weight:600; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; }
-  .orders-table td { padding:12px 16px; border-bottom:1px solid var(--border); }
-  .orders-table tr:last-child td { border-bottom:none; }
-  .orders-table tr:hover td { background:var(--columbia-ice); }
-  .export-btn { background:var(--columbia-blue); color:var(--columbia-navy); border:none; padding:9px 18px; border-radius:8px; font-family:'Outfit',sans-serif; font-size:0.82rem; font-weight:600; cursor:pointer; }
-  .export-btn:hover { background:#a5cee0; }
-  .back-btn { background:none; color:var(--columbia-navy); border:1px solid var(--border); padding:9px 18px; border-radius:8px; font-family:'Outfit',sans-serif; font-size:0.82rem; font-weight:500; cursor:pointer; }
-  .back-btn:hover { background:var(--columbia-ice); }
-
   footer { background:var(--columbia-navy); color:rgba(255,255,255,0.5); padding:28px 24px; font-size:0.78rem; }
   .footer-inner { max-width:1100px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; }
-  .admin-link { color:var(--columbia-blue); opacity:0.6; text-decoration:none; font-size:0.78rem; cursor:pointer; transition:opacity 0.2s; font-weight:500; letter-spacing:0.04em; }
-  .admin-link:hover { opacity:1; }
 
   .success-overlay { display:none; position:fixed; inset:0; background:rgba(0,20,50,0.6); backdrop-filter:blur(6px); z-index:300; align-items:center; justify-content:center; }
   .success-overlay.show { display:flex; }
@@ -233,34 +204,6 @@
   </main>
 </div>
 
-<div class="page" id="pageAdmin">
-  <main>
-    <div class="admin-login" id="adminLogin">
-      <h3>Team Orders</h3>
-      <p>Enter the team password to view orders.</p>
-      <input type="password" id="adminPwd" placeholder="Password" onkeydown="if(event.key==='Enter') adminAuth()">
-      <button class="login-btn" onclick="adminAuth()">Log In</button>
-      <div class="error-msg" id="loginError">Incorrect password. Try again.</div>
-    </div>
-    <div class="orders-view" id="ordersView">
-      <div class="orders-toolbar">
-        <h3>All Orders</h3>
-        <div style="display:flex;gap:10px;align-items:center;">
-          <button class="export-btn" onclick="exportCSV()">Export CSV</button>
-          <button class="back-btn" onclick="switchTab('shop')">&#8592; Back to Shop</button>
-        </div>
-      </div>
-      <div class="orders-stats" id="ordersStats"></div>
-      <div class="orders-table-wrap">
-        <table class="orders-table">
-          <thead><tr><th>#</th><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>UNI</th><th>Items</th><th>Total</th></tr></thead>
-          <tbody id="ordersBody"></tbody>
-        </table>
-      </div>
-    </div>
-  </main>
-</div>
-
 <div class="toast" id="toast"></div>
 
 <div class="success-overlay" id="successOverlay">
@@ -273,9 +216,8 @@
 </div>
 
 <footer>
-  <div class="footer-inner">
+  <div class="footer-inner" style="justify-content:center;">
     <span>&copy; 2026 Columbia Women's Club Basketball &middot; Go Lions!</span>
-    <a class="admin-link" onclick="switchTab('admin')">&#128274; Team Login</a>
   </div>
 </footer>
 
@@ -292,17 +234,14 @@ const PRODUCTS = [
 ];
 
 // ─────────────────────────────────────────────────────────────
-// ⚙️  CONFIG — update these two values before going live
+// ⚙️  CONFIG — update this before going live
 // ─────────────────────────────────────────────────────────────
-// 1. Paste your Google Apps Script Web App URL here (from "Deploy → Manage deployments").
-//    Leave as "" to skip Google Sheets and only save orders to localStorage.
+// Paste your Google Apps Script Web App URL here (from "Deploy → Manage deployments").
+// Leave as "" to skip Google Sheets and only save orders to localStorage as a silent backup.
 const APPS_SCRIPT_URL = "";
-// 2. Change this to a password only team admins know.
-const ADMIN_PASSWORD = "columbia2026";
 // ─────────────────────────────────────────────────────────────
 
 let cart = [];
-let orders = JSON.parse(localStorage.getItem('cwcb_orders') || '[]');
 let toastTimer = null;
 
 function switchTab(tab) {
@@ -316,8 +255,6 @@ function switchTab(tab) {
     document.getElementById('pageCart').classList.add('active');
     document.getElementById('tabCart').classList.add('active');
     renderCartPage();
-  } else if (tab==='admin') {
-    document.getElementById('pageAdmin').classList.add('active');
   }
   window.scrollTo(0,0);
 }
@@ -394,7 +331,7 @@ function placeOrder() {
   if (!valid) { showToast('Please fill in all fields'); return; }
 
   const order = {
-    id: orders.length+1,
+    id: Date.now(),
     date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
     name: document.getElementById('custName').value.trim(),
     email: document.getElementById('custEmail').value.trim(),
@@ -403,10 +340,15 @@ function placeOrder() {
     items: cart.map(c => c.name + ' ('+c.size+')').join(', '),
     total: cart.reduce((s,c)=>s+c.price,0)
   };
-  orders.push(order);
-  localStorage.setItem('cwcb_orders', JSON.stringify(orders));
 
-  // If an Apps Script URL is configured, also push to Google Sheets.
+  // Silent local backup in case the Sheets POST fails.
+  try {
+    const backup = JSON.parse(localStorage.getItem('cwcb_orders') || '[]');
+    backup.push(order);
+    localStorage.setItem('cwcb_orders', JSON.stringify(backup));
+  } catch (e) { /* ignore */ }
+
+  // If an Apps Script URL is configured, push to Google Sheets.
   // `text/plain` content type keeps the request "simple" so the browser
   // doesn't send a CORS preflight that Apps Script doesn't handle well.
   const submitBtn = document.querySelector('.submit-order');
@@ -418,20 +360,23 @@ function placeOrder() {
       headers: { 'Content-Type': 'text/plain;charset=utf-8' }
     })
     .then(r => r.json())
-    .then(() => {
-      cart=[]; updateBadge();
-      document.getElementById('successOverlay').classList.add('show');
+    .then(data => {
+      if (data && data.result === 'success') {
+        cart=[]; updateBadge();
+        document.getElementById('successOverlay').classList.add('show');
+      } else {
+        throw new Error('Server did not confirm success');
+      }
     })
     .catch(err => {
-      console.error('Sheets submit failed:', err);
-      // Order is already saved locally, so still show success to the user.
-      cart=[]; updateBadge();
-      document.getElementById('successOverlay').classList.add('show');
+      console.error('Order submit failed:', err);
+      showToast('Order failed — please try again or text the team');
     })
     .finally(() => {
       if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Place Order'; }
     });
   } else {
+    // No Sheets configured yet — just show success (order saved to local backup only).
     cart=[]; updateBadge();
     document.getElementById('successOverlay').classList.add('show');
   }
@@ -440,28 +385,6 @@ function placeOrder() {
 function closeSuccess() {
   document.getElementById('successOverlay').classList.remove('show');
   switchTab('shop');
-}
-
-function adminAuth() {
-  if (document.getElementById('adminPwd').value===ADMIN_PASSWORD) {
-    document.getElementById('adminLogin').style.display='none';
-    document.getElementById('ordersView').classList.add('visible');
-    renderOrders();
-  } else { document.getElementById('loginError').style.display='block'; }
-}
-
-function renderOrders() {
-  const body=document.getElementById('ordersBody'), stats=document.getElementById('ordersStats');
-  if (!orders.length) { body.innerHTML='<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--text-muted);">No orders yet.</td></tr>'; stats.innerHTML=''; return; }
-  const rev=orders.reduce((s,o)=>s+o.total,0);
-  stats.innerHTML='<div class="stat-box"><div class="stat-num">'+orders.length+'</div><div class="stat-label">Total Orders</div></div><div class="stat-box"><div class="stat-num">$'+rev+'</div><div class="stat-label">Total Revenue</div></div>';
-  body.innerHTML=orders.map(o=>'<tr><td>'+o.id+'</td><td>'+o.date+'</td><td>'+o.name+'</td><td>'+o.email+'</td><td>'+o.phone+'</td><td>'+o.uni+'</td><td>'+o.items+'</td><td><strong>$'+o.total+'</strong></td></tr>').join('');
-}
-
-function exportCSV() {
-  if (!orders.length) { showToast('No orders to export'); return; }
-  const csv=['#,Date,Name,Email,Phone,UNI,Items,Total',...orders.map(o=>[o.id,o.date,'"'+o.name+'"',o.email,o.phone,o.uni,'"'+o.items+'"','$'+o.total].join(','))].join('\n');
-  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download='cwcb_orders.csv'; a.click();
 }
 
 function showToast(msg) {
