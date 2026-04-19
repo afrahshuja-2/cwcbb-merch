@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Columbia Women's Club Basketball — Merch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --columbia-blue: #B9D9EB;
+    --columbia-navy: #002B5B;
+    --columbia-navy-light: #003d7a;
+    --columbia-sky: #e8f2f8;
+    --columbia-ice: #f4f9fc;
+    --warm-white: #fafbfc;
+    --text-primary: #0a1628;
+    --text-secondary: #4a5568;
+    --text-muted: #8896a6;
+    --border: #dde5ed;
+    --shadow-lg: 0 12px 40px rgba(0,43,91,0.12);
+    --radius: 12px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Outfit',sans-serif; background:var(--warm-white); color:var(--text-primary); min-height:100vh; }
+
+  header { background:var(--columbia-navy); color:white; position:sticky; top:0; z-index:100; border-bottom:3px solid var(--columbia-blue); }
+  .header-inner { max-width:1100px; margin:0 auto; padding:18px 24px; display:flex; justify-content:space-between; align-items:center; }
+  .logo { display:flex; align-items:center; gap:14px; cursor:pointer; }
+  .logo-icon { width:48px; height:48px; display:flex; align-items:center; justify-content:center; overflow:hidden; flex-shrink:0; }
+  .logo-icon img { width:100%; height:100%; object-fit:contain; display:block; }
+  .logo-text h1 { font-family:'DM Serif Display',serif; font-size:1.15rem; letter-spacing:0.02em; line-height:1.2; }
+  .logo-text span { font-size:0.7rem; text-transform:uppercase; letter-spacing:0.15em; color:var(--columbia-blue); font-weight:500; }
+
+  .nav-tabs { display:flex; gap:6px; align-items:center; }
+  .tab-btn {
+    background:transparent; color:rgba(255,255,255,0.75); border:1px solid rgba(255,255,255,0.15);
+    padding:8px 16px; border-radius:8px; cursor:pointer; font-family:'Outfit',sans-serif;
+    font-size:0.82rem; font-weight:500; transition:all 0.2s; position:relative; letter-spacing:0.03em;
+  }
+  .tab-btn:hover, .tab-btn.active { background:var(--columbia-blue); color:var(--columbia-navy); border-color:var(--columbia-blue); }
+  .cart-badge {
+    position:absolute; top:-6px; right:-6px; background:#e85d5d; color:white;
+    font-size:0.65rem; width:18px; height:18px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; font-weight:700;
+  }
+  .cart-badge.hidden { display:none; }
+
+  .hero {
+    background:linear-gradient(135deg, var(--columbia-navy) 0%, var(--columbia-navy-light) 50%, #00507a 100%);
+    color:white; text-align:center; padding:72px 24px 64px; position:relative; overflow:hidden;
+  }
+  .hero::before {
+    content:''; position:absolute; top:-50%; left:-25%; width:150%; height:200%;
+    background:radial-gradient(ellipse at 30% 50%, rgba(185,217,235,0.12) 0%, transparent 60%); pointer-events:none;
+  }
+  .hero::after {
+    content:''; position:absolute; bottom:0; left:0; right:0; height:1px;
+    background:linear-gradient(90deg, transparent, var(--columbia-blue), transparent);
+  }
+  .hero h2 { font-family:'DM Serif Display',serif; font-size:clamp(2rem,5vw,3.2rem); margin-bottom:12px; position:relative; }
+  .hero p { font-size:1.05rem; color:var(--columbia-blue); font-weight:300; letter-spacing:0.04em; max-width:500px; margin:0 auto; position:relative; }
+
+  .page { display:none; }
+  .page.active { display:block; }
+  main { max-width:1100px; margin:0 auto; padding:48px 24px 80px; }
+  .section-label { font-size:0.72rem; text-transform:uppercase; letter-spacing:0.18em; color:var(--columbia-navy); font-weight:600; margin-bottom:8px; }
+  .section-title { font-family:'DM Serif Display',serif; font-size:1.6rem; margin-bottom:32px; }
+
+  .products-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:24px; }
+  .product-card { background:white; border-radius:var(--radius); border:1px solid var(--border); overflow:hidden; transition:all 0.3s; }
+  .product-card:hover { box-shadow:var(--shadow-lg); transform:translateY(-3px); border-color:var(--columbia-blue); }
+  .product-img { height:280px; background:var(--columbia-sky); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+  .product-img .emoji-icon { font-size:64px; }
+  .product-img img { width:100%; height:100%; object-fit:cover; object-position:center 35%; display:block; }
+  .category-header { margin-top:48px; }
+  .category-header:first-child { margin-top:0; }
+  .product-img .tag { position:absolute; top:12px; left:12px; background:var(--columbia-navy); color:white; font-size:0.65rem; padding:4px 10px; border-radius:20px; text-transform:uppercase; letter-spacing:0.1em; font-weight:600; }
+  .product-info { padding:20px; }
+  .product-name { font-weight:600; font-size:1rem; margin-bottom:4px; }
+  .product-desc { font-size:0.82rem; color:var(--text-muted); margin-bottom:14px; line-height:1.5; }
+  .product-bottom { display:flex; justify-content:space-between; align-items:center; }
+  .size-selector { margin-bottom:14px; }
+  .size-selector-label { display:block; font-size:0.68rem; font-weight:600; color:var(--text-secondary); margin-bottom:6px; text-transform:uppercase; letter-spacing:0.1em; }
+  .size-options { display:flex; gap:6px; flex-wrap:wrap; }
+  .size-option { flex:1; min-width:36px; padding:7px 0; text-align:center; border:1px solid var(--border); border-radius:6px; background:white; cursor:pointer; font-family:'Outfit',sans-serif; font-size:0.78rem; font-weight:600; color:var(--text-secondary); transition:all 0.15s; }
+  .size-option:hover { border-color:var(--columbia-navy); color:var(--columbia-navy); }
+  .size-option.selected { background:var(--columbia-navy); color:white; border-color:var(--columbia-navy); }
+  .product-price { font-weight:700; font-size:1.15rem; color:var(--columbia-navy); }
+  .add-btn { background:var(--columbia-navy); color:white; border:none; padding:9px 18px; border-radius:8px; font-family:'Outfit',sans-serif; font-size:0.82rem; font-weight:600; cursor:pointer; transition:all 0.2s; }
+  .add-btn:hover { background:var(--columbia-navy-light); transform:scale(1.03); }
+  .add-btn:active { transform:scale(0.97); }
+
+  .cart-page-inner { max-width:680px; margin:0 auto; }
+  .cart-page-inner h2 { font-family:'DM Serif Display',serif; font-size:1.6rem; margin-bottom:28px; }
+  .cart-item { display:flex; justify-content:space-between; align-items:center; padding:16px 0; border-bottom:1px solid var(--border); }
+  .cart-item-info { flex:1; }
+  .cart-item-name { font-weight:600; font-size:0.95rem; margin-bottom:2px; }
+  .cart-item-detail { font-size:0.78rem; color:var(--text-muted); }
+  .cart-item-price { font-weight:600; color:var(--columbia-navy); margin-right:14px; }
+  .remove-btn { background:none; border:none; color:#cc4444; cursor:pointer; font-size:0.78rem; font-family:'Outfit',sans-serif; font-weight:500; padding:4px 8px; border-radius:4px; }
+  .remove-btn:hover { background:#fef2f2; }
+  .cart-total { padding:20px 0; display:flex; justify-content:space-between; font-weight:700; font-size:1.2rem; border-bottom:1px solid var(--border); }
+  .cart-empty-state { text-align:center; padding:64px 0; }
+  .cart-empty-state .empty-icon { font-size:48px; margin-bottom:16px; opacity:0.4; }
+  .cart-empty-state p { color:var(--text-muted); margin-bottom:20px; }
+  .cart-empty-state button { background:var(--columbia-navy); color:white; border:none; padding:10px 24px; border-radius:8px; font-family:'Outfit',sans-serif; font-size:0.88rem; font-weight:600; cursor:pointer; }
+
+  .checkout-section { margin-top:28px; }
+  .checkout-section h3 { font-family:'DM Serif Display',serif; font-size:1.15rem; margin-bottom:20px; }
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .form-group { margin-bottom:14px; }
+  .form-group label { display:block; font-size:0.78rem; font-weight:600; color:var(--text-secondary); margin-bottom:5px; text-transform:uppercase; letter-spacing:0.08em; }
+  .form-group input { width:100%; padding:11px 14px; border:1px solid var(--border); border-radius:8px; font-family:'Outfit',sans-serif; font-size:0.9rem; transition:border-color 0.2s; background:var(--columbia-ice); }
+  .form-group input:focus { outline:none; border-color:var(--columbia-navy); background:white; }
+  .form-group input.error { border-color:#e85d5d; background:#fef8f8; }
+  .payment-note { background:var(--columbia-sky); border-left:3px solid var(--columbia-navy); padding:16px 18px; border-radius:0 8px 8px 0; margin:20px 0; font-size:0.84rem; line-height:1.7; color:var(--text-secondary); }
+  .payment-note strong { color:var(--columbia-navy); }
+  .submit-order { width:100%; background:var(--columbia-navy); color:white; border:none; padding:14px; border-radius:10px; font-family:'Outfit',sans-serif; font-size:0.95rem; font-weight:600; cursor:pointer; transition:all 0.2s; }
+  .submit-order:hover { background:var(--columbia-navy-light); }
+
+  /* ── TOAST ── */
+  .toast {
+    position:fixed; bottom:32px; left:50%; z-index:500;
+    background:var(--columbia-navy); color:white; padding:14px 28px; border-radius:10px;
+    font-size:0.88rem; font-weight:500; white-space:nowrap; pointer-events:none;
+    box-shadow:var(--shadow-lg);
+    opacity:0; transform:translateX(-50%) translateY(16px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .toast.show {
+    opacity:1; transform:translateX(-50%) translateY(0);
+  }
+  .toast.fade-out {
+    opacity:0; transform:translateX(-50%) translateY(-8px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  /* ── ADMIN ── */
+  .admin-login { max-width:360px; margin:80px auto; text-align:center; }
+  .admin-login h3 { font-family:'DM Serif Display',serif; font-size:1.4rem; margin-bottom:8px; }
+  .admin-login p { color:var(--text-muted); font-size:0.88rem; margin-bottom:24px; }
+  .admin-login input { width:100%; padding:12px 16px; border:1px solid var(--border); border-radius:8px; font-family:'Outfit',sans-serif; font-size:0.95rem; margin-bottom:12px; text-align:center; }
+  .admin-login input:focus { outline:none; border-color:var(--columbia-navy); }
+  .login-btn { width:100%; background:var(--columbia-navy); color:white; border:none; padding:12px; border-radius:8px; font-family:'Outfit',sans-serif; font-size:0.9rem; font-weight:600; cursor:pointer; }
+  .login-btn:hover { background:var(--columbia-navy-light); }
+  .error-msg { color:#e85d5d; font-size:0.82rem; margin-top:8px; display:none; }
+  .orders-view { display:none; }
+  .orders-view.visible { display:block; }
+  .orders-toolbar { display:flex; justify-content:space-between; align-items:center; margin-bottom:24px; flex-wrap:wrap; gap:12px; }
+  .orders-toolbar h3 { font-family:'DM Serif Display',serif; font-size:1.4rem; }
+  .orders-stats { display:flex; gap:20px; }
+  .stat-box { background:var(--columbia-sky); padding:12px 20px; border-radius:10px; text-align:center; }
+  .stat-box .stat-num { font-size:1.5rem; font-weight:700; color:var(--columbia-navy); }
+  .stat-box .stat-label { font-size:0.7rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-muted); font-weight:600; }
+  .orders-table-wrap { overflow-x:auto; border:1px solid var(--border); border-radius:var(--radius); background:white; margin-top:20px; }
+  .orders-table { width:100%; border-collapse:collapse; font-size:0.85rem; }
+  .orders-table th { background:var(--columbia-navy); color:white; padding:12px 16px; text-align:left; font-weight:600; font-size:0.75rem; text-transform:uppercase; letter-spacing:0.08em; }
+  .orders-table td { padding:12px 16px; border-bottom:1px solid var(--border); }
+  .orders-table tr:last-child td { border-bottom:none; }
+  .orders-table tr:hover td { background:var(--columbia-ice); }
+  .export-btn { background:var(--columbia-blue); color:var(--columbia-navy); border:none; padding:9px 18px; border-radius:8px; font-family:'Outfit',sans-serif; font-size:0.82rem; font-weight:600; cursor:pointer; }
+  .export-btn:hover { background:#a5cee0; }
+  .back-btn { background:none; color:var(--columbia-navy); border:1px solid var(--border); padding:9px 18px; border-radius:8px; font-family:'Outfit',sans-serif; font-size:0.82rem; font-weight:500; cursor:pointer; }
+  .back-btn:hover { background:var(--columbia-ice); }
+
+  footer { background:var(--columbia-navy); color:rgba(255,255,255,0.5); padding:28px 24px; font-size:0.78rem; }
+  .footer-inner { max-width:1100px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; }
+  .admin-link { color:var(--columbia-blue); opacity:0.6; text-decoration:none; font-size:0.78rem; cursor:pointer; transition:opacity 0.2s; font-weight:500; letter-spacing:0.04em; }
+  .admin-link:hover { opacity:1; }
+
+  .success-overlay { display:none; position:fixed; inset:0; background:rgba(0,20,50,0.6); backdrop-filter:blur(6px); z-index:300; align-items:center; justify-content:center; }
+  .success-overlay.show { display:flex; }
+  .success-card { background:white; border-radius:16px; padding:48px; text-align:center; max-width:420px; margin:24px; box-shadow:var(--shadow-lg); animation:popIn 0.4s cubic-bezier(0.22,1,0.36,1); }
+  @keyframes popIn { from { transform:scale(0.85); opacity:0; } to { transform:scale(1); opacity:1; } }
+  .success-card .check { width:64px; height:64px; background:#e6f7ee; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-size:28px; }
+  .success-card h3 { font-family:'DM Serif Display',serif; font-size:1.4rem; margin-bottom:8px; }
+  .success-card p { color:var(--text-secondary); font-size:0.9rem; line-height:1.6; margin-bottom:24px; }
+  .success-card button { background:var(--columbia-navy); color:white; border:none; padding:11px 28px; border-radius:8px; font-family:'Outfit',sans-serif; font-size:0.88rem; font-weight:600; cursor:pointer; }
+
+  @media (max-width:600px) {
+    .header-inner { padding:14px 16px; }
+    .logo-text h1 { font-size:1rem; }
+    .hero { padding:48px 20px 40px; }
+    .products-grid { grid-template-columns:1fr; }
+    main { padding:32px 16px 60px; }
+    .form-row { grid-template-columns:1fr; }
+    .orders-stats { flex-direction:column; gap:8px; }
+    .footer-inner { flex-direction:column; gap:8px; text-align:center; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo" onclick="switchTab('shop')">
+      <div class="logo-icon"><img src="images/logo.svg" alt="Columbia Club Basketball Logo"></div>
+      <div class="logo-text">
+        <span>Columbia University</span>
+        <h1>Women's Club Basketball</h1>
+      </div>
+    </div>
+    <div class="nav-tabs">
+      <button class="tab-btn active" id="tabShop" onclick="switchTab('shop')">Shop</button>
+      <button class="tab-btn" id="tabCart" onclick="switchTab('cart')">
+        Cart
+        <span class="cart-badge hidden" id="cartBadge">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="page active" id="pageShop">
+  <div class="hero">
+    <h2>Official Team Merch</h2>
+    <p>Rep the squad. Support the team. Look good doing it.</p>
+  </div>
+  <main>
+    <div class="section-label category-header">Women's Collection</div>
+    <div class="section-title">Women's 2025–26 Gear</div>
+    <div class="products-grid" id="womensGrid"></div>
+
+    <div class="section-label category-header">Men's Collection</div>
+    <div class="section-title">Men's 2025–26 Gear</div>
+    <div class="products-grid" id="mensGrid"></div>
+  </main>
+</div>
+
+<div class="page" id="pageCart">
+  <main>
+    <div class="cart-page-inner" id="cartPageInner"></div>
+  </main>
+</div>
+
+<div class="page" id="pageAdmin">
+  <main>
+    <div class="admin-login" id="adminLogin">
+      <h3>Team Orders</h3>
+      <p>Enter the team password to view orders.</p>
+      <input type="password" id="adminPwd" placeholder="Password" onkeydown="if(event.key==='Enter') adminAuth()">
+      <button class="login-btn" onclick="adminAuth()">Log In</button>
+      <div class="error-msg" id="loginError">Incorrect password. Try again.</div>
+    </div>
+    <div class="orders-view" id="ordersView">
+      <div class="orders-toolbar">
+        <h3>All Orders</h3>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <button class="export-btn" onclick="exportCSV()">Export CSV</button>
+          <button class="back-btn" onclick="switchTab('shop')">&#8592; Back to Shop</button>
+        </div>
+      </div>
+      <div class="orders-stats" id="ordersStats"></div>
+      <div class="orders-table-wrap">
+        <table class="orders-table">
+          <thead><tr><th>#</th><th>Date</th><th>Name</th><th>Email</th><th>Phone</th><th>UNI</th><th>Items</th><th>Total</th></tr></thead>
+          <tbody id="ordersBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="success-overlay" id="successOverlay">
+  <div class="success-card">
+    <div class="check">&#10003;</div>
+    <h3>Order Placed!</h3>
+    <p>A team member will reach out to <strong>collect payment</strong> (Venmo, Zelle, or Cash) and <strong>arrange pickup on campus</strong>. Keep an eye on your email and phone!</p>
+    <button onclick="closeSuccess()">Continue Shopping</button>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span>&copy; 2026 Columbia Women's Club Basketball &middot; Go Lions!</span>
+    <a class="admin-link" onclick="switchTab('admin')">&#128274; Team Login</a>
+  </div>
+</footer>
+
+<script>
+const PRODUCTS = [
+  // ── Women's ──
+  { id:1, category:"womens", name:"Women's Columbia Club Basketball Tee", desc:"Classic cotton crewneck with front logo", price:25, img:"images/womens-tee.jpg", tag:"Bestseller", sizes:["XS","S","M","L","XL","XXL"] },
+  { id:2, category:"womens", name:"Women's Columbia Club Basketball Hoodie", desc:"Heavyweight fleece pullover with front crest", price:50, img:"images/womens-hoodie.jpg", tag:"New", sizes:["XS","S","M","L","XL","XXL"] },
+  { id:3, category:"womens", name:"Women's Roar Lion Roar Tee", desc:"Cotton crewneck with repeating back graphic", price:25, img:"images/womens-roar-tee.jpg", tag:null, sizes:["XS","S","M","L","XL","XXL"] },
+  // ── Men's ──
+  { id:4, category:"mens", name:"Men's Columbia Club Basketball Tee", desc:"Classic cotton crewneck with front logo", price:25, img:"images/mens-tee.jpg", tag:"Bestseller", sizes:["XS","S","M","L","XL","XXL"] },
+  { id:5, category:"mens", name:"Men's Columbia Club Basketball Hoodie", desc:"Heavyweight fleece pullover with front crest", price:50, img:"images/mens-hoodie.jpg", tag:"New", sizes:["XS","S","M","L","XL","XXL"] },
+  { id:6, category:"mens", name:"Men's Roar Lion Roar Tee", desc:"Cotton crewneck with repeating back graphic", price:25, img:"images/mens-roar-tee.jpg", tag:null, sizes:["XS","S","M","L","XL","XXL"] },
+];
+
+// ─────────────────────────────────────────────────────────────
+// ⚙️  CONFIG — update these two values before going live
+// ─────────────────────────────────────────────────────────────
+// 1. Paste your Google Apps Script Web App URL here (from "Deploy → Manage deployments").
+//    Leave as "" to skip Google Sheets and only save orders to localStorage.
+const APPS_SCRIPT_URL = "";
+// 2. Change this to a password only team admins know.
+const ADMIN_PASSWORD = "columbia2026";
+// ─────────────────────────────────────────────────────────────
+
+let cart = [];
+let orders = JSON.parse(localStorage.getItem('cwcb_orders') || '[]');
+let toastTimer = null;
+
+function switchTab(tab) {
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tabShop').classList.remove('active');
+  document.getElementById('tabCart').classList.remove('active');
+  if (tab==='shop') {
+    document.getElementById('pageShop').classList.add('active');
+    document.getElementById('tabShop').classList.add('active');
+  } else if (tab==='cart') {
+    document.getElementById('pageCart').classList.add('active');
+    document.getElementById('tabCart').classList.add('active');
+    renderCartPage();
+  } else if (tab==='admin') {
+    document.getElementById('pageAdmin').classList.add('active');
+  }
+  window.scrollTo(0,0);
+}
+
+function renderProducts() {
+  const cardHTML = p => {
+    const sizeButtons = p.sizes.map(s =>
+      '<button type="button" class="size-option" onclick="selectSize(this)" data-size="'+s+'">'+s+'</button>'
+    ).join('');
+    return '<div class="product-card" data-product-id="'+p.id+'"><div class="product-img"><img src="'+p.img+'" alt="'+p.name+'" loading="lazy">'+(p.tag?'<span class="tag">'+p.tag+'</span>':'')+
+    '</div><div class="product-info"><div class="product-name">'+p.name+'</div><div class="product-desc">'+p.desc+'</div>'+
+    '<div class="size-selector"><span class="size-selector-label">Size</span><div class="size-options">'+sizeButtons+'</div></div>'+
+    '<div class="product-bottom"><span class="product-price">$'+p.price+'</span>'+
+    '<button class="add-btn" onclick="addToCart('+p.id+', this)">Add to Cart</button></div></div></div>';
+  };
+  document.getElementById('womensGrid').innerHTML = PRODUCTS.filter(p=>p.category==='womens').map(cardHTML).join('');
+  document.getElementById('mensGrid').innerHTML = PRODUCTS.filter(p=>p.category==='mens').map(cardHTML).join('');
+}
+
+function selectSize(btn) {
+  const card = btn.closest('.product-card');
+  card.querySelectorAll('.size-option').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function addToCart(id, btn) {
+  const card = btn.closest('.product-card');
+  const selected = card.querySelector('.size-option.selected');
+  if (!selected) { showToast('Please select a size'); return; }
+  const size = selected.dataset.size;
+  const p = PRODUCTS.find(x=>x.id===id);
+  cart.push({...p, size:size, cartId:Date.now()+Math.random()});
+  updateBadge();
+  showToast(p.name+' ('+size+') added to cart');
+  // reset size selection so it's obvious the add went through
+  card.querySelectorAll('.size-option').forEach(b => b.classList.remove('selected'));
+}
+
+function updateBadge() {
+  const el = document.getElementById('cartBadge');
+  el.textContent = cart.length;
+  el.classList.toggle('hidden', cart.length===0);
+}
+
+function removeFromCart(cid) {
+  cart = cart.filter(c=>c.cartId!==cid);
+  updateBadge();
+  renderCartPage();
+}
+
+function renderCartPage() {
+  const wrap = document.getElementById('cartPageInner');
+  if (!cart.length) {
+    wrap.innerHTML = '<div class="cart-empty-state"><div class="empty-icon">🛒</div><p>Your cart is empty</p><button onclick="switchTab(\'shop\')">Browse Merch</button></div>';
+    return;
+  }
+  const total = cart.reduce((s,c)=>s+c.price,0);
+  wrap.innerHTML = '<h2>Your Cart</h2>' +
+    cart.map(c=>'<div class="cart-item"><div class="cart-item-info"><div class="cart-item-name">'+c.name+'</div><div class="cart-item-detail">Size '+c.size+' &middot; $'+c.price+'</div></div><button class="remove-btn" onclick="removeFromCart('+c.cartId+')">Remove</button></div>').join('') +
+    '<div class="cart-total"><span>Total</span><span>$'+total+'</span></div>' +
+    '<div class="checkout-section"><h3>Your Information</h3>' +
+    '<div class="form-row"><div class="form-group"><label>Full Name</label><input type="text" id="custName" placeholder="Jane Doe"></div><div class="form-group"><label>UNI</label><input type="text" id="custUni" placeholder="jd1234"></div></div>' +
+    '<div class="form-row"><div class="form-group"><label>Email</label><input type="email" id="custEmail" placeholder="jd1234@columbia.edu"></div><div class="form-group"><label>Phone</label><input type="tel" id="custPhone" placeholder="(555) 123-4567"></div></div>' +
+    '<div class="payment-note"><strong>How it works:</strong> After you place your order, a team member will contact you to <strong>collect payment via Venmo, Zelle, or Cash</strong> and <strong>coordinate pickup on campus</strong>. No payment is due now — just submit your order and we\'ll handle the rest!</div>' +
+    '<button class="submit-order" onclick="placeOrder()">Place Order</button></div>';
+}
+
+function placeOrder() {
+  let valid = true;
+  ['custName','custEmail','custPhone','custUni'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el.value.trim()) { el.classList.add('error'); valid=false; } else { el.classList.remove('error'); }
+  });
+  if (!valid) { showToast('Please fill in all fields'); return; }
+
+  const order = {
+    id: orders.length+1,
+    date: new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}),
+    name: document.getElementById('custName').value.trim(),
+    email: document.getElementById('custEmail').value.trim(),
+    phone: document.getElementById('custPhone').value.trim(),
+    uni: document.getElementById('custUni').value.trim(),
+    items: cart.map(c => c.name + ' ('+c.size+')').join(', '),
+    total: cart.reduce((s,c)=>s+c.price,0)
+  };
+  orders.push(order);
+  localStorage.setItem('cwcb_orders', JSON.stringify(orders));
+
+  // If an Apps Script URL is configured, also push to Google Sheets.
+  // `text/plain` content type keeps the request "simple" so the browser
+  // doesn't send a CORS preflight that Apps Script doesn't handle well.
+  const submitBtn = document.querySelector('.submit-order');
+  if (APPS_SCRIPT_URL) {
+    if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Placing order...'; }
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify(order),
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+    })
+    .then(r => r.json())
+    .then(() => {
+      cart=[]; updateBadge();
+      document.getElementById('successOverlay').classList.add('show');
+    })
+    .catch(err => {
+      console.error('Sheets submit failed:', err);
+      // Order is already saved locally, so still show success to the user.
+      cart=[]; updateBadge();
+      document.getElementById('successOverlay').classList.add('show');
+    })
+    .finally(() => {
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Place Order'; }
+    });
+  } else {
+    cart=[]; updateBadge();
+    document.getElementById('successOverlay').classList.add('show');
+  }
+}
+
+function closeSuccess() {
+  document.getElementById('successOverlay').classList.remove('show');
+  switchTab('shop');
+}
+
+function adminAuth() {
+  if (document.getElementById('adminPwd').value===ADMIN_PASSWORD) {
+    document.getElementById('adminLogin').style.display='none';
+    document.getElementById('ordersView').classList.add('visible');
+    renderOrders();
+  } else { document.getElementById('loginError').style.display='block'; }
+}
+
+function renderOrders() {
+  const body=document.getElementById('ordersBody'), stats=document.getElementById('ordersStats');
+  if (!orders.length) { body.innerHTML='<tr><td colspan="8" style="text-align:center;padding:40px;color:var(--text-muted);">No orders yet.</td></tr>'; stats.innerHTML=''; return; }
+  const rev=orders.reduce((s,o)=>s+o.total,0);
+  stats.innerHTML='<div class="stat-box"><div class="stat-num">'+orders.length+'</div><div class="stat-label">Total Orders</div></div><div class="stat-box"><div class="stat-num">$'+rev+'</div><div class="stat-label">Total Revenue</div></div>';
+  body.innerHTML=orders.map(o=>'<tr><td>'+o.id+'</td><td>'+o.date+'</td><td>'+o.name+'</td><td>'+o.email+'</td><td>'+o.phone+'</td><td>'+o.uni+'</td><td>'+o.items+'</td><td><strong>$'+o.total+'</strong></td></tr>').join('');
+}
+
+function exportCSV() {
+  if (!orders.length) { showToast('No orders to export'); return; }
+  const csv=['#,Date,Name,Email,Phone,UNI,Items,Total',...orders.map(o=>[o.id,o.date,'"'+o.name+'"',o.email,o.phone,o.uni,'"'+o.items+'"','$'+o.total].join(','))].join('\n');
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'})); a.download='cwcb_orders.csv'; a.click();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  // Reset any ongoing animation
+  if (toastTimer) clearTimeout(toastTimer);
+  t.classList.remove('show','fade-out');
+  t.textContent = msg;
+
+  // Trigger reflow so classes re-apply
+  void t.offsetWidth;
+
+  // Fade in
+  t.classList.add('show');
+
+  // After 1.5s, fade out
+  toastTimer = setTimeout(() => {
+    t.classList.remove('show');
+    t.classList.add('fade-out');
+    // Fully hidden after fade completes
+    setTimeout(() => t.classList.remove('fade-out'), 500);
+  }, 1500);
+}
+
+renderProducts();
+</script>
+</body>
+</html>
