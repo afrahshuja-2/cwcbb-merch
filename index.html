@@ -75,7 +75,22 @@
   .product-img img { width:100%; height:100%; object-fit:cover; object-position:center 35%; display:block; }
   .category-header { margin-top:48px; }
   .category-header:first-child { margin-top:0; }
-  .product-img .tag { position:absolute; top:12px; left:12px; background:var(--columbia-navy); color:white; font-size:0.65rem; padding:4px 10px; border-radius:20px; text-transform:uppercase; letter-spacing:0.1em; font-weight:600; }
+  .product-img .tag { position:absolute; top:12px; left:12px; background:var(--columbia-navy); color:white; font-size:0.65rem; padding:4px 10px; border-radius:20px; text-transform:uppercase; letter-spacing:0.1em; font-weight:600; z-index:3; }
+
+  /* Dual-view image (front + back side-by-side, connected) */
+  .product-img.dual { display:grid; grid-template-columns:1fr 1fr; gap:0; }
+  .product-img-half { position:relative; height:100%; overflow:hidden; background:var(--columbia-sky); }
+  .product-img-half img { width:100%; height:100%; object-fit:cover; object-position:center 35%; display:block; }
+  .product-img-half + .product-img-half { border-left:1px solid rgba(0,43,91,0.08); }
+  .view-label {
+    position:absolute; bottom:10px; left:50%; transform:translateX(-50%);
+    background:rgba(0,43,91,0.88); color:white;
+    font-size:0.62rem; padding:4px 11px; border-radius:20px;
+    text-transform:uppercase; letter-spacing:0.14em; font-weight:600;
+    backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
+    z-index:2;
+  }
+
   .product-info { padding:20px; }
   .product-name { font-weight:600; font-size:1rem; margin-bottom:4px; }
   .product-desc { font-size:0.82rem; color:var(--text-muted); margin-bottom:14px; line-height:1.5; }
@@ -224,13 +239,11 @@
 <script>
 const PRODUCTS = [
   // ── Women's ──
-  { id:1, category:"womens", name:"Women's Columbia Club Basketball Tee", desc:"Classic cotton crewneck with front logo", price:25, img:"womens-tee.jpg", tag:"Bestseller", sizes:["XS","S","M","L","XL","XXL"] },
+  { id:1, category:"womens", name:"Women's Columbia Club Basketball Tee", desc:"Cotton crewneck with front logo and Roar Lion Roar back graphic", price:25, images:{ front:"womens-tee.jpg", back:"womens-roar-tee.jpg" }, tag:"Bestseller", sizes:["XS","S","M","L","XL","XXL"] },
   { id:2, category:"womens", name:"Women's Columbia Club Basketball Hoodie", desc:"Heavyweight fleece pullover with front crest", price:35, img:"womens-hoodie.jpg", tag:"New", sizes:["XS","S","M","L","XL","XXL"] },
-  { id:3, category:"womens", name:"Women's Roar Lion Roar Tee", desc:"Cotton crewneck with repeating back graphic", price:25, img:"womens-roar-tee.jpg", tag:null, sizes:["XS","S","M","L","XL","XXL"] },
   // ── Men's ──
-  { id:4, category:"mens", name:"Men's Columbia Club Basketball Tee", desc:"Classic cotton crewneck with front logo", price:25, img:"mens-tee.jpg", tag:"Bestseller", sizes:["XS","S","M","L","XL","XXL"] },
+  { id:4, category:"mens", name:"Men's Columbia Club Basketball Tee", desc:"Cotton crewneck with front logo and Roar Lion Roar back graphic", price:25, images:{ front:"mens-tee.jpg", back:"mens-roar-tee.jpg" }, tag:"Bestseller", sizes:["XS","S","M","L","XL","XXL"] },
   { id:5, category:"mens", name:"Men's Columbia Club Basketball Hoodie", desc:"Heavyweight fleece pullover with front crest", price:35, img:"mens-hoodie.jpg", tag:"New", sizes:["XS","S","M","L","XL","XXL"] },
-  { id:6, category:"mens", name:"Men's Roar Lion Roar Tee", desc:"Cotton crewneck with repeating back graphic", price:25, img:"mens-roar-tee.jpg", tag:null, sizes:["XS","S","M","L","XL","XXL"] },
 ];
 
 // ─────────────────────────────────────────────────────────────
@@ -264,8 +277,18 @@ function renderProducts() {
     const sizeButtons = p.sizes.map(s =>
       '<button type="button" class="size-option" onclick="selectSize(this)" data-size="'+s+'">'+s+'</button>'
     ).join('');
-    return '<div class="product-card" data-product-id="'+p.id+'"><div class="product-img"><img src="'+p.img+'" alt="'+p.name+'" loading="lazy">'+(p.tag?'<span class="tag">'+p.tag+'</span>':'')+
-    '</div><div class="product-info"><div class="product-name">'+p.name+'</div><div class="product-desc">'+p.desc+'</div>'+
+
+    // Dual (front/back) vs single image
+    const imgBlock = p.images
+      ? '<div class="product-img dual">'+
+          '<div class="product-img-half"><img src="'+p.images.front+'" alt="'+p.name+' (front)" loading="lazy"><span class="view-label">Front</span></div>'+
+          '<div class="product-img-half"><img src="'+p.images.back+'" alt="'+p.name+' (back)" loading="lazy"><span class="view-label">Back</span></div>'+
+          (p.tag?'<span class="tag">'+p.tag+'</span>':'')+
+        '</div>'
+      : '<div class="product-img"><img src="'+p.img+'" alt="'+p.name+'" loading="lazy">'+(p.tag?'<span class="tag">'+p.tag+'</span>':'')+'</div>';
+
+    return '<div class="product-card" data-product-id="'+p.id+'">'+imgBlock+
+    '<div class="product-info"><div class="product-name">'+p.name+'</div><div class="product-desc">'+p.desc+'</div>'+
     '<div class="size-selector"><span class="size-selector-label">Size</span><div class="size-options">'+sizeButtons+'</div></div>'+
     '<div class="product-bottom"><span class="product-price">$'+p.price+'</span>'+
     '<button class="add-btn" onclick="addToCart('+p.id+', this)">Add to Cart</button></div></div></div>';
